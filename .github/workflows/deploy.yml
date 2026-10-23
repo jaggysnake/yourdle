@@ -25,10 +25,17 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - name: Resolve base path
+        run: |
+          if [ -n "${{ vars.BASE_PATH }}" ]; then
+            echo "BASE_PATH=${{ vars.BASE_PATH }}" >> "$GITHUB_ENV"
+          else
+            echo "BASE_PATH=/${GITHUB_REPOSITORY#*/}/" >> "$GITHUB_ENV"
+          fi
       - run: npm run build
-        env:
-          BASE_PATH: ${{ vars.BASE_PATH }}
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
