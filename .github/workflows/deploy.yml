@@ -29,6 +29,8 @@ jobs:
         run: |
           if [ -n "${{ vars.BASE_PATH }}" ]; then
             echo "BASE_PATH=${{ vars.BASE_PATH }}" >> "$GITHUB_ENV"
+          elif [ -f public/CNAME ]; then
+            echo "BASE_PATH=/" >> "$GITHUB_ENV"
           else
             echo "BASE_PATH=/${GITHUB_REPOSITORY#*/}/" >> "$GITHUB_ENV"
           fi
