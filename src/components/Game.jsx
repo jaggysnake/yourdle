@@ -3,6 +3,7 @@ import Board from './Board.jsx';
 import Keyboard from './Keyboard.jsx';
 import Toast from './Toast.jsx';
 import ResultModal from './ResultModal.jsx';
+import Header from './Header.jsx';
 import { useGame } from '../hooks/useGame.js';
 import { buildShareText } from '../lib/share.js';
 import { loadDictionary, isLengthLoaded } from '../lib/dictionary.js';
@@ -77,9 +78,7 @@ export default function Game({ answer, maxGuesses }) {
 
   return (
     <div className="screen game">
-      <header className="header">
-        <h1>Yourdle</h1>
-      </header>
+      <Header />
       <Toast message={state.toast} />
       {ready ? (
         <>

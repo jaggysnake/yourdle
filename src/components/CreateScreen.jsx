@@ -8,6 +8,7 @@ import {
 } from '../lib/constants.js';
 import { loadDictionary, isValidWord } from '../lib/dictionary.js';
 import { encodePuzzle } from '../lib/puzzle.js';
+import Header from './Header.jsx';
 
 function buildBase() {
   return `${window.location.origin}${import.meta.env.BASE_URL}`.replace(/\/$/, '');
@@ -57,9 +58,7 @@ export default function CreateScreen() {
 
   return (
     <div className="screen create">
-      <header className="header">
-        <h1>Yourdle</h1>
-      </header>
+      <Header />
       <p className="tagline">
         Make a word puzzle for a friend. Pick a word (4–10 letters) and how many guesses they get, then
         share the link.

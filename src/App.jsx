@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import CreateScreen from './components/CreateScreen.jsx';
 import Game from './components/Game.jsx';
+import Header from './components/Header.jsx';
 import { decodePuzzle } from './lib/puzzle.js';
 
 function parseLocation() {
@@ -23,9 +24,7 @@ export default function App() {
   if (parsed.mode === 'error') {
     return (
       <div className="screen create">
-        <header className="header">
-          <h1>Yourdle</h1>
-        </header>
+        <Header />
         <p className="error">That puzzle link looks broken.</p>
         <a className="btn primary" href={import.meta.env.BASE_URL}>
           Create your own →
