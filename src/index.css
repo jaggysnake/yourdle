@@ -1,0 +1,455 @@
+:root {
+  --correct: #6aaa64;
+  --present: #c9b458;
+  --absent: #787c7e;
+  --border-empty: #d3d6da;
+  --border-filled: #878a8c;
+  --key-bg: #d3d6da;
+  --text: #1a1a1b;
+  --bg: #ffffff;
+  --header-border: #d3d6da;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, 'Clear Sans', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 0 8px 8px;
+}
+
+.header {
+  width: 100%;
+  border-bottom: 1px solid var(--header-border);
+  text-align: center;
+  padding: 6px 0;
+}
+
+.header h1 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ---- Board ---- */
+.board-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.board {
+  display: grid;
+  grid-gap: 5px;
+  padding: 10px;
+  width: min(100%, calc(var(--cols) * 62px));
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-gap: 5px;
+}
+
+.tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1rem, 7.5vmin, 2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
+  background: var(--bg);
+  border: 2px solid var(--border-empty);
+  user-select: none;
+}
+
+.tile.filled {
+  border-color: var(--border-filled);
+  animation: pop 0.1s ease;
+}
+
+.tile.reveal {
+  color: #fff;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  animation-delay: calc(var(--col) * 300ms);
+}
+
+.tile.reveal.correct {
+  animation-name: flip-correct;
+}
+.tile.reveal.present {
+  animation-name: flip-present;
+}
+.tile.reveal.absent {
+  animation-name: flip-absent;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes flip-correct {
+  0% {
+    transform: rotateX(0);
+    background: var(--bg);
+    border-color: var(--border-filled);
+    color: var(--text);
+  }
+  49.9% {
+    background: var(--bg);
+    border-color: var(--border-filled);
+    color: var(--text);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  50.1% {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: #fff;
+  }
+  100% {
+    transform: rotateX(0);
+    background: var(--correct);
+    border-color: var(--correct);
+    color: #fff;
+  }
+}
+
+@keyframes flip-present {
+  0% {
+    transform: rotateX(0);
+    background: var(--bg);
+    border-color: var(--border-filled);
+    color: var(--text);
+  }
+  49.9% {
+    background: var(--bg);
+    border-color: var(--border-filled);
+    color: var(--text);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  50.1% {
+    background: var(--present);
+    border-color: var(--present);
+    color: #fff;
+  }
+  100% {
+    transform: rotateX(0);
+    background: var(--present);
+    border-color: var(--present);
+    color: #fff;
+  }
+}
+
+@keyframes flip-absent {
+  0% {
+    transform: rotateX(0);
+    background: var(--bg);
+    border-color: var(--border-filled);
+    color: var(--text);
+  }
+  49.9% {
+    background: var(--bg);
+    border-color: var(--border-filled);
+    color: var(--text);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  50.1% {
+    background: var(--absent);
+    border-color: var(--absent);
+    color: #fff;
+  }
+  100% {
+    transform: rotateX(0);
+    background: var(--absent);
+    border-color: var(--absent);
+    color: #fff;
+  }
+}
+
+.row.invalid {
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  80% {
+    transform: translateX(4px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-7px);
+  }
+  40%,
+  60% {
+    transform: translateX(7px);
+  }
+}
+
+/* ---- Keyboard ---- */
+.keyboard {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.key {
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--key-bg);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.key:active {
+  transform: scale(0.96);
+}
+
+.key.wide {
+  flex: 1.5;
+  font-size: 0.72rem;
+}
+
+.key.correct {
+  background: var(--correct);
+  color: #fff;
+}
+.key.present {
+  background: var(--present);
+  color: #fff;
+}
+.key.absent {
+  background: var(--absent);
+  color: #fff;
+}
+
+/* ---- Toast ---- */
+.toast-area {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.toast {
+  background: var(--text);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  animation: fade 0.1s ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- Create screen ---- */
+.create {
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.tagline {
+  text-align: center;
+  color: #555;
+  margin: 18px 0 4px;
+  line-height: 1.4;
+}
+
+.field {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.field input {
+  padding: 12px;
+  font-size: 1.2rem;
+  border: 2px solid var(--border-empty);
+  border-radius: 6px;
+  text-transform: lowercase;
+}
+
+.field input[type='number'] {
+  text-transform: none;
+}
+
+.error {
+  color: #c0392b;
+  font-weight: 600;
+  margin: 0;
+}
+
+.muted {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 6px;
+  border: 2px solid var(--border-filled);
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: var(--correct);
+  border-color: var(--correct);
+  color: #fff;
+}
+
+.btn.block {
+  width: 100%;
+  max-width: 360px;
+}
+
+.result-link {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-link input {
+  padding: 10px;
+  font-size: 0.85rem;
+  border: 2px solid var(--border-empty);
+  border-radius: 6px;
+}
+
+.result-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.result-actions .btn {
+  flex: 1;
+}
+
+/* ---- Modal ---- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  padding: 16px;
+}
+
+.modal {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: rise 0.2s ease;
+}
+
+.modal h2 {
+  margin: 0;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
