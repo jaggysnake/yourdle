@@ -7,6 +7,7 @@ import {
   DEFAULT_GUESSES,
 } from '../lib/constants.js';
 import { loadDictionary, isValidWord } from '../lib/dictionary.js';
+import { stepGuesses } from '../lib/guesses.js';
 import { encodePuzzle } from '../lib/puzzle.js';
 import Header from './Header.jsx';
 
@@ -77,16 +78,32 @@ export default function CreateScreen() {
           onKeyDown={(e) => e.key === 'Enter' && generate()}
         />
       </label>
-      <label className="field">
-        <span>Number of guesses</span>
-        <input
-          type="number"
-          min={MIN_GUESSES}
-          max={MAX_GUESSES}
-          value={guesses}
-          onChange={(e) => setGuesses(Math.max(MIN_GUESSES, Math.min(MAX_GUESSES, Number(e.target.value) || MIN_GUESSES)))}
-        />
-      </label>
+      <div className="field">
+        <label htmlFor="guesses">Number of guesses</label>
+        <div className="stepper">
+          <output id="guesses" aria-live="polite">
+            {guesses}
+          </output>
+          <button
+            type="button"
+            className="btn stepper-btn"
+            onClick={() => setGuesses(stepGuesses(guesses, -1))}
+            aria-disabled={guesses <= MIN_GUESSES}
+            aria-label="Fewer guesses"
+          >
+            ▼
+          </button>
+          <button
+            type="button"
+            className="btn stepper-btn"
+            onClick={() => setGuesses(stepGuesses(guesses, 1))}
+            aria-disabled={guesses >= MAX_GUESSES}
+            aria-label="More guesses"
+          >
+            ▲
+          </button>
+        </div>
+      </div>
       {error && <p className="error">{error}</p>}
       <button type="button" className="btn primary block" onClick={generate} disabled={checking}>
         {checking ? 'Checking…' : 'Generate link'}
