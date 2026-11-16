@@ -92,17 +92,21 @@ export default function Game({ answer, maxGuesses }) {
             wordLength={wordLength}
             shake={state.shake}
           />
+          {resultReady && !modalOpen && (
+            <button
+              type="button"
+              className="btn primary show-result"
+              onClick={() => setModalOpen(true)}
+            >
+              Show result
+            </button>
+          )}
           <Keyboard keyStates={state.keyStates} onKey={onKey} onEnter={onEnter} onBackspace={onBackspace} />
         </>
       ) : (
         <div className="board-wrap">
           <p className="muted">Loading dictionary…</p>
         </div>
-      )}
-      {resultReady && !modalOpen && (
-        <button type="button" className="btn primary" onClick={() => setModalOpen(true)}>
-          Show result
-        </button>
       )}
       <ResultModal
         open={modalOpen}

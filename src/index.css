@@ -441,6 +441,10 @@ body {
   color: #fff;
 }
 
+.show-result {
+  margin-bottom: 10px;
+}
+
 .btn.block {
   width: 100%;
   max-width: 360px;

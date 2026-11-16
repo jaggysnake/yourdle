@@ -37,6 +37,21 @@ describe('Game result modal', () => {
     expect(screen.queryByRole('button', { name: 'Show result' })).not.toBeInTheDocument();
   });
 
+  // The requirement is positional: below the on-screen keyboard it falls off the bottom
+  // of a phone screen.
+  it('places the reopen button above the keyboard', async () => {
+    const user = userEvent.setup();
+    render(<Game answer="scary" maxGuesses={4} />);
+
+    await winTheGame(user);
+    await user.click(screen.getByRole('heading', { name: /You got it/ }).closest('.modal-backdrop'));
+
+    const button = screen.getByRole('button', { name: 'Show result' });
+    const keyboard = document.querySelector('.keyboard');
+
+    expect(button.compareDocumentPosition(keyboard) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it('offers no reopen button while the tiles are still revealing', async () => {
     const user = userEvent.setup();
     render(<Game answer="scary" maxGuesses={4} />);
