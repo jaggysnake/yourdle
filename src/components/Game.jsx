@@ -14,6 +14,7 @@ export default function Game({ answer, maxGuesses }) {
   const revealMs = wordLength * 300 + 400;
   const { state, onKey, onBackspace, onEnter, clearToast, clearShake } = useGame({ answer, maxGuesses });
   const [ready, setReady] = useState(isLengthLoaded(wordLength));
+  const [resultReady, setResultReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [shareLabel, setShareLabel] = useState('Share result');
 
@@ -55,7 +56,10 @@ export default function Game({ answer, maxGuesses }) {
 
   useEffect(() => {
     if (state.status === 'playing') return undefined;
-    const t = setTimeout(() => setModalOpen(true), revealMs);
+    const t = setTimeout(() => {
+      setResultReady(true);
+      setModalOpen(true);
+    }, revealMs);
     return () => clearTimeout(t);
   }, [state.status, revealMs]);
 
@@ -94,6 +98,11 @@ export default function Game({ answer, maxGuesses }) {
         <div className="board-wrap">
           <p className="muted">Loading dictionary…</p>
         </div>
+      )}
+      {resultReady && !modalOpen && (
+        <button type="button" className="btn primary" onClick={() => setModalOpen(true)}>
+          Show result
+        </button>
       )}
       <ResultModal
         open={modalOpen}
