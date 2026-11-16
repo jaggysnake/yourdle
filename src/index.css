@@ -81,6 +81,10 @@ body {
   left: 4px;
 }
 
+.header-github {
+  right: 4px;
+}
+
 /* ---- Board ---- */
 .board-wrap {
   flex: 1;
