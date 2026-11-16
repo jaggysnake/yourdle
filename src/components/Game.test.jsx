@@ -52,6 +52,32 @@ describe('Game result modal', () => {
     expect(button.compareDocumentPosition(keyboard) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
+  it('exposes the result as a labelled dialog', async () => {
+    const user = userEvent.setup();
+    render(<Game answer="scary" maxGuesses={4} />);
+
+    await winTheGame(user);
+    const dialog = screen.getByRole('dialog', { name: /You got it/ });
+
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(dialog).toHaveFocus();
+  });
+
+  it('closes on the close button and on Escape', async () => {
+    const user = userEvent.setup();
+    render(<Game answer="scary" maxGuesses={4} />);
+
+    await winTheGame(user);
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Show result' }));
+    expect(screen.getByRole('dialog')).toBeVisible();
+
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it('offers no reopen button while the tiles are still revealing', async () => {
     const user = userEvent.setup();
     render(<Game answer="scary" maxGuesses={4} />);

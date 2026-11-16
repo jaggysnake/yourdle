@@ -441,6 +441,28 @@ body {
   color: #fff;
 }
 
+.modal-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--absent);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus-visible {
+  color: var(--text);
+  background: var(--key-bg);
+}
+
 .show-result {
   margin-bottom: 10px;
 }
@@ -487,6 +509,7 @@ body {
 }
 
 .modal {
+  position: relative;
   background: var(--bg);
   border-radius: 10px;
   padding: 24px;
