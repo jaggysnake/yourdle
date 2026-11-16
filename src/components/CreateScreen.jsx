@@ -9,6 +9,7 @@ import {
 import { loadDictionary, isValidWord } from '../lib/dictionary.js';
 import { stepGuesses } from '../lib/guesses.js';
 import { encodePuzzle } from '../lib/puzzle.js';
+import ArrowIcon from './ArrowIcon.jsx';
 import Header from './Header.jsx';
 
 function buildBase() {
@@ -91,7 +92,7 @@ export default function CreateScreen() {
             aria-disabled={guesses <= MIN_GUESSES}
             aria-label="Fewer guesses"
           >
-            ▼
+            <ArrowIcon pointing="down" />
           </button>
           <button
             type="button"
@@ -100,7 +101,7 @@ export default function CreateScreen() {
             aria-disabled={guesses >= MAX_GUESSES}
             aria-label="More guesses"
           >
-            ▲
+            <ArrowIcon pointing="up" />
           </button>
         </div>
       </div>

@@ -46,4 +46,20 @@ describe('CreateScreen guess stepper', () => {
     expect(more).toHaveAttribute('aria-disabled', 'true');
     expect(fewer).toHaveAttribute('aria-disabled', 'false');
   });
+
+  // The arrows were text glyphs and rendered at two different sizes on mobile, because
+  // no font in the body stack covers U+25B2/U+25BC and each resolved its own fallback.
+  it('draws both arrows at one size instead of relying on a font', () => {
+    render(<CreateScreen />);
+    const fewer = screen.getByRole('button', { name: 'Fewer guesses' });
+    const more = screen.getByRole('button', { name: 'More guesses' });
+
+    const arrows = [fewer, more].map((button) => button.querySelector('svg'));
+
+    arrows.forEach((arrow) => expect(arrow).not.toBeNull());
+    expect(arrows[0].getAttribute('width')).toBe(arrows[1].getAttribute('width'));
+    expect(arrows[0].getAttribute('height')).toBe(arrows[1].getAttribute('height'));
+    expect(fewer.textContent).toBe('');
+    expect(more.textContent).toBe('');
+  });
 });
