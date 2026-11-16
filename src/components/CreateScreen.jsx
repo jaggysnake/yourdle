@@ -61,8 +61,8 @@ export default function CreateScreen() {
     <div className="screen create">
       <Header />
       <p className="tagline">
-        Make a word puzzle for a friend. Pick a word (4–10 letters) and how many guesses they get, then
-        share the link.
+        Make a word puzzle for a friend. Pick a word ({MIN_WORD_LENGTH}–{MAX_WORD_LENGTH} letters) and
+        how many guesses they get, then share the link.
       </p>
       <label className="field">
         <span>Word ({MIN_WORD_LENGTH}–{MAX_WORD_LENGTH} letters)</span>
@@ -121,7 +121,9 @@ export default function CreateScreen() {
           </div>
         </div>
       )}
-      <p className="muted">4–10 letter words · no account, no server</p>
+      <p className="muted">
+        {MIN_WORD_LENGTH}–{MAX_WORD_LENGTH} letter words · no account, no server
+      </p>
     </div>
   );
 }

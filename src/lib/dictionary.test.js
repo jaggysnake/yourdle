@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readdirSync } from 'node:fs';
+import { MIN_WORD_LENGTH, MAX_WORD_LENGTH } from './constants.js';
 import { parseWordList, loadDictionary, isValidWord, isLengthLoaded } from './dictionary.js';
 
 const fetcher = (text, ok = true) => async () => ({ ok, text: async () => text });
@@ -26,5 +28,22 @@ describe('dictionary', () => {
 
   it('throws when the dictionary file is unavailable', async () => {
     await expect(loadDictionary(9, fetcher('', false))).rejects.toThrow();
+  });
+});
+
+// The allowed word lengths and the shipped word lists have to agree exactly: a length
+// with no list 404s at play time, and a list outside the range is dead weight a reader
+// would mistake for a supported length.
+describe('allowed lengths and shipped word lists', () => {
+  it('ships exactly one word list per allowed length and no others', () => {
+    const allowed = Array.from(
+      { length: MAX_WORD_LENGTH - MIN_WORD_LENGTH + 1 },
+      (_, i) => MIN_WORD_LENGTH + i,
+    );
+    const shipped = readdirSync('public/words')
+      .map((name) => Number(name.match(/^len-(\d+)\.txt$/)?.[1]))
+      .filter(Number.isInteger);
+
+    expect(shipped.sort((a, b) => a - b)).toEqual(allowed);
   });
 });
