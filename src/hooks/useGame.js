@@ -46,7 +46,10 @@ export function reducer(state, action) {
       if (state.current.length < state.wordLength) {
         return { ...state, toast: 'Not enough letters', shake: true };
       }
-      if (!isValidWord(state.current)) {
+      // The answer itself is always submittable: a hand-crafted link can set a word
+      // that is not in the dictionary, and so can a failed dictionary fetch, and the
+      // puzzle would otherwise be unwinnable.
+      if (state.current !== state.answer && !isValidWord(state.current)) {
         return { ...state, toast: 'Not in word list', shake: true };
       }
       const statuses = evaluateGuess(state.current, state.answer);

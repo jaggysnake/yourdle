@@ -84,3 +84,19 @@ describe('guess easter egg', () => {
     expect(submit(init(), 'cares').toast).toBeNull();
   });
 });
+
+describe('an answer outside the dictionary', () => {
+  it('can still be submitted, so the puzzle stays winnable', () => {
+    const state = submit(init('zzzzz'), 'zzzzz');
+
+    expect(state.status).toBe('won');
+    expect(state.rows).toHaveLength(1);
+  });
+
+  it('does not open the gate for any other unlisted word', () => {
+    const state = submit(init('zzzzz'), 'qqqqq');
+
+    expect(state.toast).toBe('Not in word list');
+    expect(state.rows).toHaveLength(0);
+  });
+});
