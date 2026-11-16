@@ -7,8 +7,7 @@ import Header from './Header.jsx';
 import { useGame } from '../hooks/useGame.js';
 import { buildShareText } from '../lib/share.js';
 import { loadDictionary, isLengthLoaded } from '../lib/dictionary.js';
-
-const HOME_HREF = import.meta.env.BASE_URL;
+import { HOME_HREF } from '../lib/constants.js';
 
 export default function Game({ answer, maxGuesses }) {
   const wordLength = answer.length;

@@ -40,6 +40,7 @@ body {
 }
 
 .header {
+  position: relative;
   width: 100%;
   border-bottom: 1px solid var(--header-border);
   text-align: center;
@@ -52,6 +53,32 @@ body {
   font-size: 34px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+}
+
+/* Corner links are taken out of flow so the title stays centred regardless of how many
+   are present; under flex a single left-hand item would push it off centre. */
+.header-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  color: var(--absent);
+  text-decoration: none;
+}
+
+.header-icon:hover,
+.header-icon:focus-visible {
+  color: var(--text);
+  background: var(--key-bg);
+}
+
+.header-home {
+  left: 4px;
 }
 
 /* ---- Board ---- */

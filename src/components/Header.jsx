@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import EasterEgg from './EasterEgg.jsx';
+import HomeIcon from './HomeIcon.jsx';
+import { HOME_HREF } from '../lib/constants.js';
 import { recordTap, shouldTrigger } from '../lib/easterEgg.js';
 
 // Shared app header. Tapping the title three times in quick succession reveals a
@@ -21,6 +23,9 @@ export default function Header() {
   return (
     <>
       <header className="header">
+        <a className="header-icon header-home" href={HOME_HREF} aria-label="Home" title="Home">
+          <HomeIcon />
+        </a>
         <h1 className="header-title" onPointerDown={handleTap}>
           Yourdle
         </h1>
