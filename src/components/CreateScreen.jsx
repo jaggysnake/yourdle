@@ -45,7 +45,7 @@ export default function CreateScreen() {
       setError(`"${w}" is not in the word list`);
       return;
     }
-    setUrl(`${buildBase()}/?word=${encodePuzzle({ word: w, guesses })}`);
+    setUrl(`${buildBase()}/?${encodePuzzle({ word: w, guesses })}`);
   };
 
   const copy = async () => {

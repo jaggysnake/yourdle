@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import CreateScreen from './components/CreateScreen.jsx';
 import Game from './components/Game.jsx';
 import Header from './components/Header.jsx';
-import { decodePuzzle } from './lib/puzzle.js';
+import { decodePuzzle, isPuzzleLink } from './lib/puzzle.js';
 
 function parseLocation() {
-  const raw = new URLSearchParams(window.location.search).get('word');
-  if (!raw) return { mode: 'create' };
+  const { search } = window.location;
+  if (!isPuzzleLink(search)) return { mode: 'create' };
   try {
-    const { word, guesses } = decodePuzzle(raw);
+    const { word, guesses } = decodePuzzle(search);
     return { mode: 'play', word, guesses };
   } catch {
     return { mode: 'error' };
