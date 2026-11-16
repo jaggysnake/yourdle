@@ -3,7 +3,7 @@ import { reducer, createInitialState } from './useGame.js';
 import { loadDictionary } from '../lib/dictionary.js';
 
 beforeAll(async () => {
-  await loadDictionary(5, async () => ({ ok: true, text: async () => 'scary\ncares\n' }));
+  await loadDictionary(5, async () => ({ ok: true, text: async () => 'scary\ncares\navery\n' }));
 });
 
 const init = (answer = 'scary', maxGuesses = 4) => createInitialState({ answer, maxGuesses });
@@ -64,5 +64,23 @@ describe('game reducer', () => {
     let state = submit(init(), 'scary');
     state = reducer(state, { type: 'key', letter: 'a' });
     expect(state.current).toBe('');
+  });
+});
+
+describe('guess easter egg', () => {
+  it('shows a message when the hidden word is guessed', () => {
+    expect(submit(init(), 'avery').toast).toBe('silly boy!');
+  });
+
+  it('still scores the guess as an ordinary one', () => {
+    const state = submit(init(), 'avery');
+
+    expect(state.rows).toHaveLength(1);
+    expect(state.rows[0].guess).toBe('avery');
+    expect(state.status).toBe('playing');
+  });
+
+  it('leaves the toast empty for any other valid guess', () => {
+    expect(submit(init(), 'cares').toast).toBeNull();
   });
 });

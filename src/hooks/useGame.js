@@ -1,6 +1,7 @@
 import { useReducer, useCallback } from 'react';
 import { isValidWord } from '../lib/dictionary.js';
 import { evaluateGuess } from '../lib/evaluate.js';
+import { guessEggMessage } from '../lib/easterEgg.js';
 
 const RANK = { absent: 0, present: 1, correct: 2 };
 
@@ -59,7 +60,7 @@ export function reducer(state, action) {
         current: '',
         keyStates,
         status: won ? 'won' : lost ? 'lost' : 'playing',
-        toast: null,
+        toast: guessEggMessage(state.current),
         shake: false,
       };
     }

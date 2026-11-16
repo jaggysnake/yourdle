@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { recordTap, shouldTrigger, TAP_WINDOW_MS } from './easterEgg.js';
+import { GUESS_EGG_WORD, guessEggMessage, GUESS_EGG_MESSAGE } from './easterEgg.js';
 
 describe('easterEgg tap detection', () => {
   it('triggers on three taps within the window (AC-EE1a)', () => {
@@ -33,5 +35,21 @@ describe('easterEgg tap detection', () => {
     const now = TAP_WINDOW_MS;
     const taps = recordTap([0], now);
     expect(taps).toEqual([0, TAP_WINDOW_MS]);
+  });
+});
+
+describe('guess easter egg', () => {
+  it('returns the message for the egg word and nothing for anything else', () => {
+    expect(guessEggMessage(GUESS_EGG_WORD)).toBe(GUESS_EGG_MESSAGE);
+    expect(guessEggMessage('scary')).toBeNull();
+  });
+
+  // The reducer rejects any guess outside the dictionary, so the egg is unreachable if
+  // the word ever drops out of the shipped list. The reducer test uses a stub list and
+  // would not catch that.
+  it('uses a word that is actually in the shipped five-letter list', () => {
+    const words = readFileSync('public/words/len-5.txt', 'utf8');
+
+    expect(words.split('\n').map((w) => w.trim())).toContain(GUESS_EGG_WORD);
   });
 });

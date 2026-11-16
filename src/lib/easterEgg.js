@@ -15,3 +15,12 @@ export function recordTap(previousTaps, now, windowMs = TAP_WINDOW_MS) {
 export function shouldTrigger(taps, count = TAPS_TO_TRIGGER) {
   return taps.length >= count;
 }
+
+// The reducer gates every guess on isValidWord before it reaches the egg, so this only
+// ever fires while the word is still present in public/words/len-5.txt.
+export const GUESS_EGG_WORD = 'avery';
+export const GUESS_EGG_MESSAGE = 'silly boy!';
+
+export function guessEggMessage(guess) {
+  return guess === GUESS_EGG_WORD ? GUESS_EGG_MESSAGE : null;
+}
